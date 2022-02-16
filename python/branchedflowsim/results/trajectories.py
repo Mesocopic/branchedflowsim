@@ -7,7 +7,12 @@ Created on Thu May  7 10:18:20 2015
 This file contains a class for managing ray trajectories
 """
 
-from itertools import izip as izip
+#from itertools import izip as izip
+try:
+    from itertools import izip
+except ImportError:  #python3.x
+    izip = zip
+
 
 import numpy as np
 

@@ -25,7 +25,7 @@ class ResultFile(object):
         it will be read from that path, and otherwise, if there is a default `_FILE_NAME_`
         specified in the class, this will be appended to the path and the file will be read
         from there. If neither is possible an IOError will be raised.
-        
+
         :param str|BinaryIO|dict source: The source from which to construct the ResultFile.
         """
         if source is not None:
@@ -56,7 +56,7 @@ class ResultFile(object):
         This checks the file header (if specified) and then reads all data according to the objects `_SPEC_`.
         Additional postprocessing can be performed with a user defined `_from_file` function, then the gathered
         data will be passed on to the `from_dict` function.
-        
+
         :raises IOError: if the file header does not match the specified `_FILE_HEADER_`.
         """
 
@@ -86,7 +86,7 @@ class ResultFile(object):
         Only attributes for specs that have `is_attr` set will be set. There is no
         verification that the data actually corresponds (in data type and shape) to
         the specification in `_SPEC_`.
-        
+
         :param dict data: A dictionary containing data where the keys follow the name
                           entries of the `_SPEC_`.
         :return: nothing.
@@ -135,9 +135,9 @@ class ResultFile(object):
           result = None
           for next_result in generate_results():
               result = next_result.reduce(result)
-        
+
         The operation does modify `self`, and returns a new reference just for convenience.
-        
+
         :param ResultFile other: the result file to be merged with this one, of the same type as `self`, or `None`.
         :return: `self`.
         :raises: AssertionError, if a reduction is deactivated by setting it to `Reductions.fail` \
@@ -156,7 +156,7 @@ class ResultFile(object):
             try:
                 data[spec.name] = spec.reduction(getattr(self, spec.name), getattr(other, spec.name))
             except AssertionError as E:
-                raise AssertionError("Assertion triggered when reducing %s: %s" % (spec.name, E.message))
+                raise AssertionError("Assertion triggered when reducing %s: %s" % (spec.name, str(E)))
 
         self.from_dict(data)
         return self
